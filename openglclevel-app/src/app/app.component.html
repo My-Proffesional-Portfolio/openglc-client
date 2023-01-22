@@ -1,6 +1,6 @@
 <body>
   <div>
-    <header>
+    <header *ngIf="!authService.isNullToken()">
       <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
         <div class="container">
 

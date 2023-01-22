@@ -4,16 +4,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './Pages/login/login.component';
-import { RegisterComponent } from './Pages/register/register.component';
 import { HomeComponent } from './Pages/home/home.component';
+import { EventsComponent } from './Pages/events/events.component';
+import { MealEventComponent } from './Pages/meal-event/meal-event.component';
 import { NewRegisterComponent } from './Pages/new-register/new-register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent,
     HomeComponent,
+    EventsComponent,
+    MealEventComponent,
     NewRegisterComponent,
   ],
   imports: [

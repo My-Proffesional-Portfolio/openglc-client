@@ -8,6 +8,8 @@ import { HomeComponent } from './Pages/home/home.component';
 import { EventsComponent } from './Pages/events/events.component';
 import { MealEventComponent } from './Pages/meal-event/meal-event.component';
 import { NewRegisterComponent } from './Pages/new-register/new-register.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { NewRegisterComponent } from './Pages/new-register/new-register.componen
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

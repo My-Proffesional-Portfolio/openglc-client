@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AccountService } from 'src/app/Services/account.service';
 
 @Component({
@@ -8,14 +9,35 @@ import { AccountService } from 'src/app/Services/account.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private accountService : AccountService) { }
+  constructor(private accountService : AccountService, private router: Router) { }
+  
+  userName: string = "";
+  password: string = "";
+
 
   ngOnInit(): void {
+    debugger;
+    if (this.accountService.getUserData() !== null)
+      this.router.navigate(['/']);
   }
 
   login(){
+    debugger;
+    this.accountService.login(this.userName, this.password).subscribe({
+      next: (data: any) => {
+        debugger;
+        data.userName = this.userName;
+        localStorage.setItem("userData", JSON.stringify(data));
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        debugger;
+        alert("Contraseña incorrecta o servicio no disponible! -->" + err.error.errorMessages[0]);
+        },
+      });
 
-    this.accountService.token = "33333"
   }
+
+  
 
 }

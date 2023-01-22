@@ -39,4 +39,9 @@ export class AppComponent {
   toggle() {
     this.isExpanded = !this.isExpanded;
   }
+
+  logOut(){
+    localStorage.removeItem("userData");
+    this.router.navigate(['/login']);
+  }
 }

@@ -1,6 +1,6 @@
 <body>
   <div>
-    <header *ngIf="!authService.isNullToken()">
+    <header  *ngIf="authService.getUserData() && authService.getUserData().token">
       <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
         <div class="container">
 
@@ -24,7 +24,7 @@
                 <a class="nav-link" style="color:white" [routerLink]="link.path">{{link.text}}</a>
               </li>
               <li>
-                <a class="nav-link" >Salir</a>
+                <a class="nav-link" (click)="logOut()" >Salir</a>
               </li>
 
             </ul>

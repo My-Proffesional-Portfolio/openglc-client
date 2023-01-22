@@ -16,8 +16,8 @@ constructor(private accountService: AccountService, private router: Router){
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     //loggedLogic
-    
-    if (!this.accountService.isNullToken())
+    debugger;
+    if (this.accountService.getUserData().token)
       return true;
 
       else{

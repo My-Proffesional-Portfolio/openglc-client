@@ -1,1 +1,126 @@
-<p>meal-event works!</p>
+
+<div class="card  text-center">
+    <div class="card-header">
+        Datos generales
+    </div>
+    <div class="card-body">
+        <form class="row g-3">
+         
+   
+
+            <div class="col-md-5">
+              <label for="inputAddress" class="form-label">Glucosa (mg/dl )</label>
+              <input type="text" class="form-control" id="inputName" name="name"  placeholder="Por ejemplo: 100">
+            </div>
+         
+            <!-- https://stackoverflow.com/questions/37055311/angular-2-how-to-use-javascript-date-object-with-ngmodel-two-way-binding -->
+              <div class="col-md-3">
+                <label for="inputZip" class="form-label">Fecha comida</label>
+                <input class="form-control" [ngModel]="eventDate | date:'yyyy-MM-dd'" (ngModelChange)="eventDate = $event"  type="date" name="eventDate"/>
+              </div>
+
+          
+            <div class="col-1">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" >
+                    <label class="form-check-label" for="flexSwitchCheckChecked">Posprandial</label>
+                  </div>
+            </div>
+            
+          </form>
+    </div>
+  </div>
+  <br>
+
+<div class="card  text-center">
+    <div class="card-header">
+      Comida previamente registrada
+    </div>
+    <div class="card-body">
+        <form class="row g-3">
+         
+            <div class="col-md-10">
+                <label for="inputState" class="form-label">Comida registrada</label>
+                <select id="inputState" class="form-select">
+                  <option selected>Choose...</option>
+                  <option>...</option>
+                </select>
+              </div>
+              <div class="col-md-1">
+                <label for="inputZip" class="form-label">Cantidad</label>
+                <input type="text" class="form-control" id="inputZip">
+              </div>
+
+              <div class="col-md-1">
+                <label for="inputZip" class="form-label">Acción</label>
+                <br>
+                <button class="btn btn-primary" >Agregar</button>
+              </div>
+              <hr>
+
+            
+          </form>
+    </div>
+  </div>
+
+<br>
+  <div class="card  text-center">
+    <div class="card-header">
+        Nuevos registros de comida
+    </div>
+    <div class="card-body">
+        <form class="row g-3">
+         
+   
+
+            <div class="col-10">
+              <label for="inputAddress" class="form-label">Nuevo alimento</label>
+              <input type="text" class="form-control" id="inputName" name="name" [(ngModel)]="newMealItem.mealName" placeholder="Por ejemplo: huevo">
+            </div>
+         
+            <div class="col-md-1">
+                <label for="inputZip" class="form-label">Cantidad</label>
+                <input type="number" class="form-control" id="inputQty" name="quantity" [(ngModel)]="newMealItem.quantity" id="inputZip">
+              </div>
+
+              <div class="col-md-1">
+                <label for="inputZip" class="form-label">Acción</label>
+                <br>
+                <button class="btn btn-success" (click)="addToNewMealList()" >Agregar</button>
+              </div>
+          
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck">
+                <label class="form-check-label" for="gridCheck">
+                  Check me out
+                </label>
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+          </form>
+    </div>
+  </div>
+
+
+
+  <br>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Alimento</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let m of newMealslist; index as i">
+        <td>{{m.mealName}}</td>
+        <td>{{m.quantity}}</td>
+        <td><button class="btn btn-danger" (click)="deleteNewMealItem(i)"><i class="fa fa-trash"></i></button></td>
+      </tr>
+   
+    </tbody>
+  </table>

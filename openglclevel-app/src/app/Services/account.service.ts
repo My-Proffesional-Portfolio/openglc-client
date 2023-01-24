@@ -11,7 +11,7 @@ export class AccountService {
 
   login(userName : string, password: string) {
 
-    return this.httpClient.get(environment.apiURL + "Account/login?userName=" + userName + "&password=" +password)
+    return this.httpClient.get(environment.apiURL + "Account/login?userName=" + userName + "&password=" +password, {withCredentials: true})
   }
 
   token : string = "";

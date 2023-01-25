@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ExistingMealItemPair, NewMealEventModel, NewMealItemPair } from 'src/app/Models/MealEvent/NewMealEvent';
+import { EventMealsService } from 'src/app/Services/event-meals.service';
 
 interface newMealQuantity
 {
@@ -6,6 +8,10 @@ interface newMealQuantity
   quantity: number;
 }
 
+interface MealType{
+  type: number;
+  name : string;
+}
 
 @Component({
   selector: 'app-meal-event',
@@ -17,13 +23,36 @@ export class MealEventComponent implements OnInit {
 
   newMealslist : newMealQuantity[] = [];
   newMealItem : newMealQuantity = <newMealQuantity>{mealName : "", quantity: 1};
+  mealEventTypes : MealType[] = [];
+  selectedEventType : MealType = <MealType>{};
 
   eventDate: Date = new Date();
+  isPospandrial : boolean = true;
+  glcLevel : number | undefined = undefined;
+  newMealEvent: NewMealEventModel;
 
+  constructor(private eventMealService: EventMealsService) {
 
-  constructor() { }
+    this.newMealEvent = <NewMealEventModel>{}
+    this.newMealEvent.eventDate = this.eventDate;
+    this.newMealEvent.itemMeals = new Array();
+    this.newMealEvent.newMeals = new Array();
+    this.newMealEvent.glcLevel = 0;
+   }
 
   ngOnInit(): void {
+    this.eventMealService.getMealEventTypes().subscribe({
+      next: (data: any) => {
+        debugger;
+        this.mealEventTypes=  data;
+        this.selectedEventType = this.mealEventTypes[0];
+        
+      },
+      error: (err) => {
+        debugger;
+        alert("Ha ocurrido un error -->" + err.error.errorMessages[0]);
+        },
+      });
   }
 
   addToNewMealList(){
@@ -41,6 +70,37 @@ export class MealEventComponent implements OnInit {
 
   deleteNewMealItem(index: number){
     this.newMealslist.splice(index, 1);
+  }
+
+  saveEvent(){
+
+    debugger;
+    if (this.glcLevel == null || this.eventDate == null){
+      return;
+    }
+
+    this.newMealEvent.eventDate = this.eventDate;
+    this.newMealEvent.glcLevel = this.glcLevel;
+    this.newMealEvent.mealType = this.selectedEventType.type;
+    
+    if (this.newMealslist.length > 0){
+
+      this.newMealslist.forEach(f=> {
+        var newMealQty = <NewMealItemPair>{};
+        newMealQty.name = f.mealName;
+        newMealQty.quantity = f.quantity;
+        this.newMealEvent.newMeals.push(newMealQty);
+      })
+    }
+
+    alert("Datos a guardar: Glucosa " + this.newMealEvent.glcLevel + ", Fecha: " + this.newMealEvent.eventDate + ", TIpo comida: " + this.newMealEvent.mealType)
+
+  }
+
+  updateMealType($event: any){
+    debugger;
+    this.selectedEventType = $event;
+
   }
 
 }

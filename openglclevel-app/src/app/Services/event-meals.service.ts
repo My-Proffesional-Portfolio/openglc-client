@@ -23,4 +23,12 @@ export class EventMealsService {
     // {headers: new HttpHeaders({'Authorization': 'Bearer '+ this.authService.getUserData().token})} 
     );
   }
+
+  getMealEventTypes(){
+    const options = {withCredentials: true, headers: new HttpHeaders({'Authorization': 'Bearer '+ this.authService.getUserData().token})};
+
+    return this.httpClient.get(environment.apiURL + "MealEvents/getEventMealTypes", options
+    );
+  }
+  
 }

@@ -1,1 +1,61 @@
-<p>events works!</p>
+<div class="row">
+
+<div class="col-sm-7">
+    <div class="table-responsive"> 
+      <table class="table table-hover">
+          <thead style="background-color: #007bff; color:white; font-size: small;">
+            <tr>
+              <th>Fecha evento</th>
+              <th>Nivel glucosa</th>
+              <th>Pospandrial</th>
+              <th></th>
+              <!-- <th></th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="font-size: small;" *ngFor="let e of pagedData.pagedList; index as i;">
+              <td>{{e.eventDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{e.glcLevel}}</td>
+              <td>{{e.pospandrial}}</td>
+              <!-- <td><i class="fa fa-info" (click)="openInfo(contentInfo, i)"  aria-hidden="true" style="font-size:17px;"></i></td> -->
+              <th>
+                <button class="btn btn-danger btn-sm"><i class="fa fa-ban" style="font-size: 10px;" aria-hidden="true"></i></button></th>
+            </tr>
+          
+          </tbody>
+          
+        </table>
+    </div>
+</div>
+
+<div class="col-sm-5">
+    <div class="card text-center">
+        <div class="card-header">
+            Alimentos
+        </div>
+        <div class="card-body">
+            <form class="row g-4">
+    
+                <div class="col-sm-4">
+                  <label for="inputAddress" class="form-label" name="glcLevel">Glucosa (mg/dl )</label>
+                  <br>
+                  <label  name="glcLevel">110</label>
+
+                </div>
+                <div class="col-sm-4">
+                    
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Fecha</label>
+                        <br>
+                        <label name="glcLevel">22/01/2022</label>
+                </div>
+
+                <div class="col-sm-4">
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Tipo comida</label>
+                        <br>
+                        <label name="glcLevel">Cena</label>
+                </div>
+                
+              </form>
+        </div>
+      </div>
+</div>

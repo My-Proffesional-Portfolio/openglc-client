@@ -45,4 +45,12 @@ export class EventMealsService {
     return this.httpClient.get(environment.apiURL + "MealItems?page=" + page + "&itemsPerPage=" + 1000, options
     );
   }
+
+  getMealEvents(page: number, itemsPerPage: number, searchTerm: string){
+
+    const options = {withCredentials: true, headers: new HttpHeaders({'Authorization': 'Bearer '+ this.authService.getUserData().token})};
+    
+    return this.httpClient.get(environment.apiURL + "MealEvents?page=" + page + "&itemsPerPage=" + 1000, options
+    );
+  }
 }

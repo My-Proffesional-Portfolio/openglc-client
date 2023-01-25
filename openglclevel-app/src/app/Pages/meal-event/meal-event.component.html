@@ -45,7 +45,7 @@
   </div>
   <br>
 
-<div class="card  text-center">
+<div *ngIf="preexistedMealList.length > 0" class="card  text-center">
     <div class="card-header">
       Comida previamente registrada
     </div>
@@ -54,20 +54,23 @@
          
             <div class="col-md-10">
                 <label for="inputState" class="form-label">Comida registrada</label>
-                <select id="inputState" class="form-select">
-                  <option selected>Choose...</option>
-                  <option>...</option>
-                </select>
+                <select class="form-control" name="sel" 
+                [(ngModel)]="selectedMealItemToSave" 
+                (ngModelChange)="updateMealItemSelected($event)">
+              <option *ngFor="let preexistedItem of preexistedMealList" [ngValue]="preexistedItem">
+                {{preexistedItem.name}}
+              </option>
+            </select>
               </div>
               <div class="col-md-1">
-                <label for="inputZip" class="form-label">Cantidad</label>
-                <input type="text" class="form-control" id="inputZip">
+                <label for="inputZip"  class="form-label">Cantidad</label>
+                <input type="text" class="form-control" name="itemQty"  [(ngModel)]="selectedMealItemToSave.quantity" id="inputZip">
               </div>
 
               <div class="col-md-1">
                 <label for="inputZip" class="form-label">Acción</label>
                 <br>
-                <button class="btn btn-primary" >Agregar</button>
+                <button class="btn btn-primary" (click)="addToAuxiliarListView()" >Agregar</button>
               </div>
               <hr>
 
@@ -101,15 +104,6 @@
                 <br>
                 <button class="btn btn-success" (click)="addToNewMealList()" >Agregar</button>
               </div>
-          
-            <div class="col-12">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck">
-                <label class="form-check-label" for="gridCheck">
-                  Check me out
-                </label>
-              </div>
-            </div>
          
           </form>
     </div>
@@ -131,6 +125,25 @@
         <td>{{m.mealName}}</td>
         <td>{{m.quantity}}</td>
         <td><button class="btn btn-danger" (click)="deleteNewMealItem(i)"><i class="fa fa-trash"></i></button></td>
+      </tr>
+   
+    </tbody>
+  </table>
+
+  <br>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Alimento</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let m of auxiliarPreexistedMealListView; index as i">
+        <td>{{m.name}}</td>
+        <td>{{m.quantity}}</td>
+        <td><button class="btn btn-danger" (click)="deletePreexistedAuxiliarList(i)"><i class="fa fa-trash"></i></button></td>
       </tr>
    
     </tbody>

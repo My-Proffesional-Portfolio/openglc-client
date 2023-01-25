@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ExistingMealItemPair, NewMealEventModel, NewMealItemPair } from 'src/app/Models/MealEvent/NewMealEvent';
+import { Router } from '@angular/router';
+import { ExistingMealItemPair, NewMealEventModel, NewMealItemModelDB, NewMealItemPair } from 'src/app/Models/MealEvent/NewMealEvent';
 import { EventMealsService } from 'src/app/Services/event-meals.service';
 
 interface newMealQuantity
@@ -23,6 +24,15 @@ export class MealEventComponent implements OnInit {
 
   newMealslist : newMealQuantity[] = [];
   newMealItem : newMealQuantity = <newMealQuantity>{mealName : "", quantity: 1};
+
+
+  preexistedMealList : NewMealItemModelDB[] = [];
+  selectedMealItemToSave: NewMealItemModelDB = <NewMealItemModelDB>{};
+
+  auxiliarPreexistedMealListView :  NewMealItemModelDB[] = [];
+  mealItemsListToSaveOnServer : ExistingMealItemPair[] = [];
+
+
   mealEventTypes : MealType[] = [];
   selectedEventType : MealType = <MealType>{};
 
@@ -31,7 +41,7 @@ export class MealEventComponent implements OnInit {
   glcLevel : number | undefined = undefined;
   newMealEvent: NewMealEventModel;
 
-  constructor(private eventMealService: EventMealsService) {
+  constructor(private eventMealService: EventMealsService, private router: Router) {
 
     this.newMealEvent = <NewMealEventModel>{}
     this.newMealEvent.eventDate = this.eventDate;
@@ -53,6 +63,19 @@ export class MealEventComponent implements OnInit {
         alert("Ha ocurrido un error -->" + err.error.errorMessages[0]);
         },
       });
+
+      this.eventMealService.getMealItems(0, 1000, "").subscribe({
+        next: (data: any) => {
+          debugger;
+          this.preexistedMealList = data.pagedList;
+          this.selectedMealItemToSave = this.preexistedMealList[0];
+          
+        },
+        error: (err) => {
+          debugger;
+          alert("Ha ocurrido un error -->" + err.error.errorMessages[0]);
+          },
+        });
   }
 
   addToNewMealList(){
@@ -82,6 +105,7 @@ export class MealEventComponent implements OnInit {
     this.newMealEvent.eventDate = this.eventDate;
     this.newMealEvent.glcLevel = this.glcLevel;
     this.newMealEvent.mealType = this.selectedEventType.type;
+    this.newMealEvent.postprandial = this.isPospandrial;
     
     if (this.newMealslist.length > 0){
 
@@ -90,17 +114,60 @@ export class MealEventComponent implements OnInit {
         newMealQty.name = f.mealName;
         newMealQty.quantity = f.quantity;
         this.newMealEvent.newMeals.push(newMealQty);
-      })
+      });
+      
     }
 
-    alert("Datos a guardar: Glucosa " + this.newMealEvent.glcLevel + ", Fecha: " + this.newMealEvent.eventDate + ", TIpo comida: " + this.newMealEvent.mealType)
+    if (this.auxiliarPreexistedMealListView.length > 0)
+    {
+      this.auxiliarPreexistedMealListView.forEach(f=> {
+        debugger;
+        var newPreexistedItemToSave = <ExistingMealItemPair>{};
+        newPreexistedItemToSave.iD = f.id,
+        newPreexistedItemToSave.quantity = f.quantity,
+        this.mealItemsListToSaveOnServer.push(newPreexistedItemToSave);
 
+      });
+
+      this.newMealEvent.itemMeals = this.mealItemsListToSaveOnServer;
+
+    }
+
+    // alert("Datos a guardar: Glucosa " + this.newMealEvent.glcLevel + ", Fecha: " + this.newMealEvent.eventDate + ", TIpo comida: " + this.newMealEvent.mealType)
+    this.eventMealService.addMealEvent(this.newMealEvent).subscribe({
+      next: (data: any) => {
+        debugger;
+        this.router.navigate(['/events']);
+      },
+      error: (err) => {
+        debugger;
+        alert("Ha ocurrido un error -->" + err.error.errorMessages[0]);
+        },
+      });
   }
 
   updateMealType($event: any){
     debugger;
     this.selectedEventType = $event;
 
+  }
+
+  updateMealItemSelected($event: any){
+    debugger;
+    this.selectedMealItemToSave = $event;
+
+  }
+
+  addToAuxiliarListView(){
+    debugger;
+    this.auxiliarPreexistedMealListView.push(this.selectedMealItemToSave);
+    this.selectedMealItemToSave = <NewMealItemModelDB>{};
+    this.selectedMealItemToSave = this.preexistedMealList[0];
+
+  }
+
+  deletePreexistedAuxiliarList(index: number){
+    this.auxiliarPreexistedMealListView.splice(index, 1);
   }
 
 }

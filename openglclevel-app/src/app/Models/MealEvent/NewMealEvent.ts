@@ -17,3 +17,9 @@ export interface ExistingMealItemPair {
     quantity: number;
 }
 
+export interface NewMealItemModelDB{
+    id: string;
+    name: string;
+    quantity: number;
+}
+

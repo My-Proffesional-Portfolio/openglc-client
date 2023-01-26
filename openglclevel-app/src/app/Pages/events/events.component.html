@@ -37,20 +37,20 @@
             <form class="row g-4">
     
                 <div class="col-sm-4">
-                  <label for="inputAddress" class="form-label" name="glcLevel">Glucosa (mg/dl )</label>
+                  <label for="inputAddress" class="form-label" name="glcLevel">Glucosa</label>
                   <br>
-                  <label  name="glcLevel">110</label>
+                  <label  name="glcLevel">{{currentEventShow.glcLevel}}</label>
 
                 </div>
                 <div class="col-sm-4">
                     
                         <label class="form-check-label" for="flexSwitchCheckChecked">Fecha</label>
                         <br>
-                        <label name="glcLevel">22/01/2022</label>
+                        <label name="glcLevel">{{currentEventShow.eventDate | date: 'dd/MM/yyyy'}}</label>
                 </div>
 
                 <div class="col-sm-4">
-                        <label class="form-check-label" for="flexSwitchCheckChecked">Tipo comida</label>
+                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                         <br>
                         <label name="glcLevel">Cena</label>
                 </div>

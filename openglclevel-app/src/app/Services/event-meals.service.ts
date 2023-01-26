@@ -19,10 +19,7 @@ export class EventMealsService {
 
     const options = {withCredentials: true, headers: new HttpHeaders({'Authorization': 'Bearer '+ this.authService.getUserData().token})};
 
-    return this.httpClient.get(environment.apiURL + "MealEvents/userEventMetrics",options
-    // options
-    // {headers: new HttpHeaders({'Authorization': 'Bearer '+ this.authService.getUserData().token})} 
-    );
+    return this.httpClient.get(environment.apiURL + "MealEvents/userEventMetrics",options );
   }
 
   getMealEventTypes(){
@@ -52,5 +49,12 @@ export class EventMealsService {
     
     return this.httpClient.get(environment.apiURL + "MealEvents?page=" + page + "&itemsPerPage=" + 1000, options
     );
+  }
+
+  getMealEventDetails(eventID: string){
+
+    const options = {withCredentials: true, headers: new HttpHeaders({'Authorization': 'Bearer '+ this.authService.getUserData().token})};
+    
+    return this.httpClient.get(environment.apiURL + "MealEvents/id?eventId=" + eventID, options);
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { NewRegisterModel } from '../Models/Accounts/NewRegisterModel';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,11 @@ export class AccountService {
   login(userName : string, password: string) {
 
     return this.httpClient.get(environment.apiURL + "Account/login?userName=" + userName + "&password=" +password, {withCredentials: true})
+  }
+
+  register(newUser: NewRegisterModel) {
+
+    return this.httpClient.post(environment.apiURL + "Account/register", newUser);
   }
 
   token : string = "";

@@ -16,6 +16,7 @@ export class EventsComponent implements OnInit {
   selectedMealEvent: MealEventModel = <MealEventModel>{};
 
   currentEventShow: MealEventDedtailsModel = <MealEventDedtailsModel>{}
+  selectedIndexEventType = 0;
 
   constructor(private eventMealService: EventMealsService) { }
 
@@ -24,7 +25,7 @@ export class EventsComponent implements OnInit {
       next: (data: any) => {
         debugger;
         this.pagedData= data;
-        this.selectedMealEvent = this.pagedData.pagedList[0];
+        this.selectedMealEvent = this.pagedData.pagedList[this.selectedIndexEventType];
         this.getDataFromSelectedEventID();
       },
       error: (err) => {
@@ -47,6 +48,13 @@ export class EventsComponent implements OnInit {
         },
       });
 
+  }
+
+  changeSelectedIndex(i : number){
+    debugger;
+    this.selectedIndexEventType = i;
+    this.selectedMealEvent = this.pagedData.pagedList[this.selectedIndexEventType];
+    this.getDataFromSelectedEventID();
   }
 
 }

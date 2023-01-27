@@ -41,6 +41,9 @@ export class MealEventComponent implements OnInit {
   glcLevel : number | undefined = undefined;
   newMealEvent: NewMealEventModel;
 
+  errorMessage = "";
+  processing: boolean = false;
+
   constructor(private eventMealService: EventMealsService, private router: Router) {
 
     this.newMealEvent = <NewMealEventModel>{}
@@ -96,9 +99,14 @@ export class MealEventComponent implements OnInit {
   }
 
   saveEvent(){
-
+    this.processing = true;
+    this.errorMessage = ""
+    
     debugger;
-    if (this.glcLevel == null || this.eventDate == null){
+    if (this.glcLevel == null || this.eventDate == null || !Date.parse(this.eventDate.toString()) ){
+
+      this.processing = false;
+      this.errorMessage = "El nivel de glucosa y fecha del evento son obligatorios";
       return;
     }
 
@@ -137,11 +145,13 @@ export class MealEventComponent implements OnInit {
     this.eventMealService.addMealEvent(this.newMealEvent).subscribe({
       next: (data: any) => {
         debugger;
+        this.processing = false;
         this.router.navigate(['/events']);
       },
       error: (err) => {
         debugger;
         alert("Ha ocurrido un error -->" + err.error.errorMessages[0]);
+        this.processing = false;
         },
       });
   }

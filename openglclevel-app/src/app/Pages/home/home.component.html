@@ -31,7 +31,8 @@
 
          <div class="stats">
            <h6 class="mb-0">Glc promedio</h6>
-           <span>{{userData.glcAverage}}</span>
+           <!-- <span>{{userData.glcAverage.toFixed(2)}}</span> -->
+           <span>{{userData.glcAverage | number : '1.2-2' }}</span>
 
          </div>
 

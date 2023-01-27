@@ -13,7 +13,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr style="font-size: small;" *ngFor="let e of pagedData.pagedList; index as i;">
+            <tr [ngStyle]="selectedIndexEventType === i ? {'background-color': 'whitesmoke'} : {'': ''}" style="font-size: small;" 
+            *ngFor="let e of pagedData.pagedList; index as i;" (click)="changeSelectedIndex(i)">
               <td>{{e.eventDate | date: 'dd/MM/yyyy'}}</td>
               <td>{{e.glcLevel}}</td>
               <td>{{e.pospandrial}}</td>
@@ -50,12 +51,29 @@
                 </div>
 
                 <div class="col-sm-4">
-                        <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Tiempo</label>
                         <br>
-                        <label name="glcLevel">Cena</label>
+                        <label name="glcLevel">{{currentEventShow.mealTypeText}}</label>
                 </div>
                 
               </form>
+
+              <br>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Alimento</th>
+                    <th scope="col">Cantidad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let m of currentEventShow.mealList; index as i">
+                    <td>{{m.mealName}}</td>
+                    <td>{{m.quantity}}</td>
+                  </tr>
+               
+                </tbody>
+              </table>
         </div>
       </div>
 </div>

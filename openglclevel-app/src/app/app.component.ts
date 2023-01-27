@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { EventsComponent } from './Pages/events/events.component';
 import { HomeComponent } from './Pages/home/home.component';
 import { MealEventComponent } from './Pages/meal-event/meal-event.component';
@@ -14,13 +15,16 @@ import { AccountService } from './Services/account.service';
 export class AppComponent {
   title = 'openglclevel-app';
   isExpanded = false;
+  environmentMessage = "";
+
 
   links: Array<{ text: string, path: string }> = [];
 
   constructor(private router: Router, public authService: AccountService){}
 
   ngOnInit(){
-
+  if (environment.production === false)
+      this.environmentMessage ="QA Environment"
     this.router.config.push(
       {path:"", component: HomeComponent, canActivate: [AuthguardGuard]},
       {path:"events", component: EventsComponent, canActivate: [AuthguardGuard]},

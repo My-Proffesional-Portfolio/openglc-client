@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/Services/account.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -13,26 +14,34 @@ export class LoginComponent implements OnInit {
   
   userName: string = "";
   password: string = "";
-
+  processing : boolean =  false;
+  environmentMessage = "";
 
   ngOnInit(): void {
+    if (environment.production === false)
+      this.environmentMessage ="QA Environment"
+      
     debugger;
     if (this.accountService.getUserData() !== null)
       this.router.navigate(['/']);
+
   }
 
   login(){
     debugger;
+    this.processing = true;
     this.accountService.login(this.userName, this.password).subscribe({
       next: (data: any) => {
         debugger;
         data.userName = this.userName;
         localStorage.setItem("userData", JSON.stringify(data));
+        this.processing = false;
         this.router.navigate(['/']);
       },
       error: (err) => {
         debugger;
         alert("Contraseña incorrecta o servicio no disponible! -->" + err.error.errorMessages[0]);
+        this.processing = false;
         },
       });
 

@@ -34,6 +34,10 @@
     </header>
 
   <div class="container">
+    <div>
+      <h6 style="text-align: center;" *ngIf="environmentMessage">
+        <strong style="color: red;">{{environmentMessage}}</strong></h6>
+    </div>
        <router-outlet></router-outlet>
   </div>
   </div>

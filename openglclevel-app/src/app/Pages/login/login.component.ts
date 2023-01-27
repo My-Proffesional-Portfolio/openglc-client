@@ -18,9 +18,9 @@ export class LoginComponent implements OnInit {
   environmentMessage = "";
 
   ngOnInit(): void {
-    if (environment.production === false)
+    if (environment.apiURL === "https://qaopenglc-api.azurewebsites.net/api/" || environment.apiURL === "https://localhost:7295/api/")
       this.environmentMessage ="QA Environment"
-      
+
     debugger;
     if (this.accountService.getUserData() !== null)
       this.router.navigate(['/']);

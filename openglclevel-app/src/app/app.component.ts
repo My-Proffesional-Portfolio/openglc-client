@@ -23,7 +23,9 @@ export class AppComponent {
   constructor(private router: Router, public authService: AccountService){}
 
   ngOnInit(){
-  if (environment.apiURL === "https://qaopenglc-api.azurewebsites.net/api/" || environment.apiURL === "https://localhost:7295/api/")
+  if (environment.apiURL === "https://qaopenglc-api.azurewebsites.net/api/" 
+  || environment.apiURL === "https://localhost:7295/api/" 
+  ||  environment.apiURL === "https://qaopenglclapi.somee.com/service/api/")
       this.environmentMessage ="QA Environment"
     this.router.config.push(
       {path:"", component: HomeComponent, canActivate: [AuthguardGuard]},

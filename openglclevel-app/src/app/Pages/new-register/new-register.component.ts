@@ -36,6 +36,13 @@ export class NewRegisterComponent implements OnInit {
       return;
     }
 
+    if (this.newUser.password !== this.passwordConfirm)
+    {
+      this.processing = false;
+      this.errorMessage = "La contraseña no coicide con la contraseña de confirmación";
+      return;
+    }
+    
     this.accountService.register(this.newUser).subscribe({
       next: (data: any) => {
         debugger;

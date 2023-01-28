@@ -47,6 +47,7 @@ export class AppComponent {
   }
 
   logOut(){
+    this.toggle();
     localStorage.removeItem("userData");
     this.router.navigate(['/login']);
   }

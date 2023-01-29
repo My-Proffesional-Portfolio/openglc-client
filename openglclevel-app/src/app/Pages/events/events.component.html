@@ -14,13 +14,16 @@
           </thead>
           <tbody>
             <tr [ngStyle]="selectedIndexEventType === i ? {'background-color': 'whitesmoke'} : {'': ''}" style="font-size: small;" 
-            *ngFor="let e of pagedData.pagedList; index as i;" (click)="changeSelectedIndex(i)">
-              <td>{{e.eventDate | date: 'dd/MM/yyyy'}}</td>
-              <td>{{e.glcLevel}}</td>
-              <td>{{e.pospandrial}}</td>
+            *ngFor="let e of pagedData.pagedList; index as i;" >
+              <td (click)="changeSelectedIndex(i)">{{e.eventDate | date: 'dd/MM/yyyy'}}</td>
+              <td (click)="changeSelectedIndex(i)">{{e.glcLevel}}</td>
+              <td (click)="changeSelectedIndex(i)">{{e.pospandrial}}</td>
               <!-- <td><i class="fa fa-info" (click)="openInfo(contentInfo, i)"  aria-hidden="true" style="font-size:17px;"></i></td> -->
-              <th>
-                <button class="btn btn-danger btn-sm"><i class="fa fa-ban" style="font-size: 10px;" aria-hidden="true"></i></button></th>
+              <th *ngIf="selectedIndexEventType === i">
+                <button class="btn btn-danger btn-sm"><i class="fa fa-ban" (click)="enableDeleteEvent(i)" style="font-size: 10px;" aria-hidden="true"></i></button>
+              </th>
+              <th *ngIf="selectedIndexEventType !== i">
+              </th>
             </tr>
           
           </tbody>
@@ -29,7 +32,7 @@
     </div>
 </div>
 
-<div class="col-sm-5">
+<div *ngIf="!deleteMode" class="col-sm-5">
     <div class="card text-center">
         <div class="card-header">
             Alimentos
@@ -76,4 +79,20 @@
               </table>
         </div>
       </div>
+</div>
+
+
+<div *ngIf="deleteMode" class="col-sm-5">
+  <div class="card text-center">
+      <div class="card-header">
+          Eliminar registro ({{currentEventShow.id}})
+      </div>
+      <div class="card-body">
+          <form class="row g-4">
+  
+              
+            </form>
+
+      </div>
+    </div>
 </div>

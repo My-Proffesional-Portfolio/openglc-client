@@ -17,6 +17,7 @@ export class EventsComponent implements OnInit {
 
   currentEventShow: MealEventDedtailsModel = <MealEventDedtailsModel>{}
   selectedIndexEventType = 0;
+  deleteMode : boolean = false;
 
   constructor(private eventMealService: EventMealsService) { }
 
@@ -52,9 +53,15 @@ export class EventsComponent implements OnInit {
 
   changeSelectedIndex(i : number){
     debugger;
+    this.deleteMode = false;
     this.selectedIndexEventType = i;
     this.selectedMealEvent = this.pagedData.pagedList[this.selectedIndexEventType];
     this.getDataFromSelectedEventID();
+  }
+
+  enableDeleteEvent(i: number){
+    debugger;
+    this.deleteMode = true;
   }
 
 }

@@ -47,7 +47,7 @@ export class EventMealsService {
 
     const options = {withCredentials: true, headers: new HttpHeaders({'Authorization': 'Bearer '+ this.authService.getUserData().token})};
     
-    return this.httpClient.get(environment.apiURL + "MealEvents?page=" + page + "&itemsPerPage=" + 1000, options
+    return this.httpClient.get(environment.apiURL + "MealEvents?page=" + page + "&itemsPerPage=" + itemsPerPage, options
     );
   }
 

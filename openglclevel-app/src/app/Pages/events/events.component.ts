@@ -3,6 +3,7 @@ import { MealEventDedtailsModel } from 'src/app/Models/MealEvent/MealEventDetail
 import { MealEventModel } from 'src/app/Models/MealEvent/MealEventModel';
 import PaginationModel from 'src/app/Models/Pager/PaginationModel';
 import { PaginationListEntityModel } from 'src/app/Models/PaginationListEntityModel';
+import { AccountService } from 'src/app/Services/account.service';
 import { EventMealsService } from 'src/app/Services/event-meals.service';
 import { PagerService } from 'src/app/Services/pager.service';
 
@@ -27,8 +28,12 @@ export class EventsComponent implements OnInit {
   itemsPerPageOptionValue: Array<PaginationModel.IItemsPerPage>;
   selectedItemPerPageOption: PaginationModel.IItemsPerPage;
   viewPageLinks: number[] = [];
+  userPassword : string = "";
+  processingGetToken: boolean = false;
+  deleteToken : string = "";
 
-  constructor(private eventMealService: EventMealsService, private pagerService : PagerService) { 
+  constructor(private eventMealService: EventMealsService, private pagerService : PagerService
+    ,private accountService : AccountService) { 
     this.itemsPerPageOptionValue = this.pagerService.getItemPerPageOptions();
     this.selectedItemPerPageOption = this.itemsPerPageOptionValue[0];
   }
@@ -40,7 +45,7 @@ export class EventsComponent implements OnInit {
         debugger;
         this.pagedData= data;
         this.totalPages = this.pagedData.totalPages;
-        this.selectedMealEvent = this.pagedData.pagedList[this.selectedIndexEventType];
+        this.selectedMealEvent = this.pagedData.pagedList[0];
         this.viewPageLinks = this.pagerService.setPageLinks(this.currentPage, this.totalPages);
         this.getDataFromSelectedEventID();
       },
@@ -49,6 +54,29 @@ export class EventsComponent implements OnInit {
         alert("Ha ocurrido un error -->" + err.error.errorMessages[0]);
         },
       });
+  }
+
+  getDeleteToken(){
+    this.processingGetToken = true;
+    this.accountService.login(this.accountService.getUserData().userName, this.userPassword, true)
+    .subscribe({
+      next: (data: any) => {
+        debugger;
+        this.deleteToken = data.token;
+        
+      },
+      error: (err) => {
+        debugger;
+        alert("Contraseña incorrecta o servicio no disponible! -->" + err.error.errorMessages[0]);
+        this.processingGetToken = false;
+        },
+      });
+
+  }
+
+  deleteEventById(){
+    var selectedEventID = this.currentEventShow.id;
+
   }
 
   getDataFromSelectedEventID(){
@@ -81,6 +109,10 @@ export class EventsComponent implements OnInit {
   enableDeleteEvent(i: number){
     debugger;
     this.deleteMode = true;
+  }
+
+  closeDeleteMode(){
+    this.deleteMode = false;
   }
 
   //#endregion
@@ -122,6 +154,8 @@ export class EventsComponent implements OnInit {
     this.currentPage = pageNumber;
     this.getEvents();
   }
+
+  
 
   ngOnInit(): void {
     this.getEvents();

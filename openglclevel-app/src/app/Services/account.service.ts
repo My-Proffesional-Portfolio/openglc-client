@@ -10,9 +10,15 @@ export class AccountService {
 
   constructor(private httpClient: HttpClient) { }
 
-  login(userName : string, password: string) {
+  login(userName : string, password: string, generateDeleteToken : boolean = false) {
 
-    return this.httpClient.get(environment.apiURL + "Account/login?userName=" + userName + "&password=" +password, {withCredentials: true})
+    var requestQry = "Account/login?userName=" + userName + "&password=" +password;
+    if (generateDeleteToken === true)
+    {
+      requestQry+= "&tokenForDeleteAction=true"
+    }
+    // tokenForDeleteAction=false
+    return this.httpClient.get(environment.apiURL + requestQry, {withCredentials: true})
   }
 
   register(newUser: NewRegisterModel) {

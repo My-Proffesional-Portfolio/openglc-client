@@ -39,7 +39,7 @@
     <div class="row">
   
       <div class="col-sm-6">
-        <h4></h4>
+        <h6>{{pagedData.totalCount}} resultados</h6>
      </div>
      <div class="col-sm-6">
       <select class="form-control" [(ngModel)]="selectedItemPerPageOption" (change)="manageItemsPerPage($event)">
@@ -118,7 +118,9 @@
           Eliminar registro
       </div>
       <div class="card-body">
-        <i class="fa fa-window-close-o fa-2x position-absolute top-0 end-0" style="color: blue;"></i>
+        <a href="javascript:void(0)" (click)="closeDeleteMode()">
+          <i class="fa fa-window-close-o fa-2x position-absolute top-0 end-0" style="color: blue;"></i>
+        </a>
         <h5>¿Estás seguro de eliminar el registro?. Una vez eliminado no podrá recuperarse</h5>
         <br>
         <h6>Ingresa tu contraseña para continuar</h6>
@@ -126,11 +128,11 @@
          
           <div class="col-md-12">
               <label for="inputZip"  class="form-label">Contraseña</label>
-              <input type="text" class="form-control" name="passwordForDelete" id="passwordForDelete">
+              <input type="password" class="form-control" [(ngModel)]="userPassword"  name="passwordForDelete" id="passwordForDelete">
           </div>
 
           <div class="form-group; text-center">
-            <button type="button" class="btn btn-danger" >Borrar</button>
+            <button type="button" class="btn btn-danger" (click)="getDeleteToken()" >Borrar</button>
           </div>
 
         </form>

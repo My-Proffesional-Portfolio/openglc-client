@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MealEventDedtailsModel } from 'src/app/Models/MealEvent/MealEventDetailsModel';
 import { MealEventModel } from 'src/app/Models/MealEvent/MealEventModel';
+import PaginationModel from 'src/app/Models/Pager/PaginationModel';
 import { PaginationListEntityModel } from 'src/app/Models/PaginationListEntityModel';
+import { AccountService } from 'src/app/Services/account.service';
 import { EventMealsService } from 'src/app/Services/event-meals.service';
+import { PagerService } from 'src/app/Services/pager.service';
 
 @Component({
   selector: 'app-events',
@@ -17,15 +20,33 @@ export class EventsComponent implements OnInit {
 
   currentEventShow: MealEventDedtailsModel = <MealEventDedtailsModel>{}
   selectedIndexEventType = 0;
+  deleteMode : boolean = false;
 
-  constructor(private eventMealService: EventMealsService) { }
+  itemsPerPage: number = 5;
+  currentPage: number = 0;
+  totalPages: number = 0;
+  itemsPerPageOptionValue: Array<PaginationModel.IItemsPerPage>;
+  selectedItemPerPageOption: PaginationModel.IItemsPerPage;
+  viewPageLinks: number[] = [];
+  userPassword : string = "";
+  processingGetToken: boolean = false;
+  deleteToken : string = "";
 
-  ngOnInit(): void {
-    this.eventMealService.getMealEvents(0, 1000, "").subscribe({
+  constructor(private eventMealService: EventMealsService, private pagerService : PagerService
+    ,private accountService : AccountService) { 
+    this.itemsPerPageOptionValue = this.pagerService.getItemPerPageOptions();
+    this.selectedItemPerPageOption = this.itemsPerPageOptionValue[0];
+  }
+
+  // #region server call definition methods
+    getEvents(){
+    this.eventMealService.getMealEvents(this.currentPage, this.itemsPerPage, "").subscribe({
       next: (data: any) => {
         debugger;
         this.pagedData= data;
-        this.selectedMealEvent = this.pagedData.pagedList[this.selectedIndexEventType];
+        this.totalPages = this.pagedData.totalPages;
+        this.selectedMealEvent = this.pagedData.pagedList[0];
+        this.viewPageLinks = this.pagerService.setPageLinks(this.currentPage, this.totalPages);
         this.getDataFromSelectedEventID();
       },
       error: (err) => {
@@ -33,6 +54,44 @@ export class EventsComponent implements OnInit {
         alert("Ha ocurrido un error -->" + err.error.errorMessages[0]);
         },
       });
+  }
+
+  getDeleteToken(){
+    this.processingGetToken = true;
+    this.accountService.login(this.accountService.getUserData().userName, this.userPassword, true)
+    .subscribe({
+      next: (data: any) => {
+        debugger;
+        this.deleteToken = data.token;
+        this.deleteEventById();
+        
+      },
+      error: (err) => {
+        debugger;
+        alert("Contraseña incorrecta o servicio no disponible! -->" + err.error.errorMessages[0]);
+        this.processingGetToken = false;
+        },
+      });
+
+  }
+
+  deleteEventById(){
+    var selectedEventID = this.currentEventShow.id;
+    this.eventMealService.deleteEvent(selectedEventID, this.deleteToken)
+    .subscribe({
+      next: (data: any) => {
+        debugger;
+        this.deleteToken = "";
+        window.location.reload();
+        
+      },
+      error: (err) => {
+        debugger;
+        alert("Contraseña incorrecta o servicio no disponible! -->" + err.error.errorMessages[0]);
+        this.processingGetToken = false;
+        },
+      });
+
   }
 
   getDataFromSelectedEventID(){
@@ -50,11 +109,73 @@ export class EventsComponent implements OnInit {
 
   }
 
+  //#endregion
+
+  // #region component methodos
+
   changeSelectedIndex(i : number){
     debugger;
+    this.deleteMode = false;
     this.selectedIndexEventType = i;
     this.selectedMealEvent = this.pagedData.pagedList[this.selectedIndexEventType];
     this.getDataFromSelectedEventID();
   }
+
+  enableDeleteEvent(i: number){
+    debugger;
+    this.deleteMode = true;
+  }
+
+  closeDeleteMode(){
+    this.deleteMode = false;
+  }
+
+  //#endregion
+
+
+  //#region pager logic methods
+  
+  manageItemsPerPage(event: any)
+  {
+    debugger;
+    this.itemsPerPage = this.selectedItemPerPageOption.value;
+    this.currentPage = 0;
+    this.getEvents();
+  }
+
+
+  firstPage(){
+    this.currentPage = 0;
+    this.getEvents();
+  }
+
+  lastPage(){
+    this.currentPage = this.totalPages -1;
+    this.getEvents();
+  }
+
+  nextPage(){
+    this.currentPage++;
+    this.getEvents();
+  }
+
+  previousPage(){
+    this.currentPage--;
+    this.getEvents();
+  }
+
+  goToPage(pageNumber : number)
+  {
+    this.currentPage = pageNumber;
+    this.getEvents();
+  }
+
+  
+
+  ngOnInit(): void {
+    this.getEvents();
+    
+  }
+
 
 }

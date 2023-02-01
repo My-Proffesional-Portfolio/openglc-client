@@ -47,7 +47,7 @@ export class EventMealsService {
 
     const options = {withCredentials: true, headers: new HttpHeaders({'Authorization': 'Bearer '+ this.authService.getUserData().token})};
     
-    return this.httpClient.get(environment.apiURL + "MealEvents?page=" + page + "&itemsPerPage=" + 1000, options
+    return this.httpClient.get(environment.apiURL + "MealEvents?page=" + page + "&itemsPerPage=" + itemsPerPage, options
     );
   }
 
@@ -56,5 +56,12 @@ export class EventMealsService {
     const options = {withCredentials: true, headers: new HttpHeaders({'Authorization': 'Bearer '+ this.authService.getUserData().token})};
     
     return this.httpClient.get(environment.apiURL + "MealEvents/id?eventId=" + eventID, options);
+  }
+
+  deleteEvent(eventID: string, specialToken : string)
+  {
+    debugger;
+    const options = {withCredentials: true, headers: new HttpHeaders({'Authorization': 'Bearer ' + specialToken})};
+    return this.httpClient.delete(environment.apiURL + "MealEvents/id?eventId=" + eventID, options);
   }
 }

@@ -14,22 +14,55 @@
           </thead>
           <tbody>
             <tr [ngStyle]="selectedIndexEventType === i ? {'background-color': 'whitesmoke'} : {'': ''}" style="font-size: small;" 
-            *ngFor="let e of pagedData.pagedList; index as i;" (click)="changeSelectedIndex(i)">
-              <td>{{e.eventDate | date: 'dd/MM/yyyy'}}</td>
-              <td>{{e.glcLevel}}</td>
-              <td>{{e.pospandrial}}</td>
+            *ngFor="let e of pagedData.pagedList; index as i;" >
+              <td (click)="changeSelectedIndex(i)">{{e.eventDate | date: 'dd/MM/yyyy'}}</td>
+              <td (click)="changeSelectedIndex(i)">{{e.glcLevel}}</td>
+              <!-- <td (click)="changeSelectedIndex(i)">{{e.pospandrial}}</td> -->
+              <td (click)="changeSelectedIndex(i)">
+                <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" disabled="true" name="Posprandial" [(ngModel)]="e.pospandrial" id="flexSwitchCheckChecked" >
+                <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+              </div></td>
+
               <!-- <td><i class="fa fa-info" (click)="openInfo(contentInfo, i)"  aria-hidden="true" style="font-size:17px;"></i></td> -->
-              <th>
-                <button class="btn btn-danger btn-sm"><i class="fa fa-ban" style="font-size: 10px;" aria-hidden="true"></i></button></th>
+              <th *ngIf="selectedIndexEventType === i">
+                <button class="btn btn-danger btn-sm"><i class="fa fa-ban" (click)="enableDeleteEvent(i)" style="font-size: 10px;" aria-hidden="true"></i></button>
+              </th>
+              <th *ngIf="selectedIndexEventType !== i">
+              </th>
             </tr>
           
           </tbody>
           
         </table>
     </div>
+    <div class="row">
+  
+      <div class="col-sm-6">
+        <h6>{{pagedData.totalCount}} resultados</h6>
+     </div>
+     <div class="col-sm-6">
+      <select class="form-control" [(ngModel)]="selectedItemPerPageOption" (change)="manageItemsPerPage($event)">
+        <option *ngFor="let x of itemsPerPageOptionValue" [ngValue]="x" >{{x.text}}</option>
+    </select>
+      <br/>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+          <li *ngIf="currentPage != 0" class="page-item"><a class="page-link" href="javascript:void(0)" (click)="firstPage()"><<</a></li>
+          <li *ngIf="currentPage != 0" class="page-item"><a class="page-link" href="javascript:void(0)" (click)="previousPage()">Atrás</a></li>
+          <li *ngFor="let p of viewPageLinks" class="page-item">
+            <a *ngIf="currentPage !== p" class="page-link" href="javascript:void(0)" (click)="goToPage(p)">{{p +1}}</a>
+            <a *ngIf="currentPage === p" class="page-link">{{p+1}}</a>
+          </li>
+          <li *ngIf="currentPage != totalPages -1" class="page-item"><a class="page-link" href="javascript:void(0)" (click)="nextPage()">Siguiente</a></li>
+          <li *ngIf="currentPage != totalPages -1" class="page-item"><a class="page-link" href="javascript:void(0)" (click)="lastPage()">>></a></li>
+        </ul>
+      </nav>
+    </div>
+    </div>
 </div>
 
-<div class="col-sm-5">
+<div *ngIf="!deleteMode" class="col-sm-5">
     <div class="card text-center">
         <div class="card-header">
             Alimentos
@@ -77,3 +110,36 @@
         </div>
       </div>
 </div>
+
+
+<div *ngIf="deleteMode" class="col-sm-5">
+  <div class="card text-center">
+      <div class="card-header">
+          Eliminar registro
+      </div>
+      <div class="card-body">
+        <a href="javascript:void(0)" (click)="closeDeleteMode()">
+          <i class="fa fa-window-close-o fa-2x position-absolute top-0 end-0" style="color: blue;"></i>
+        </a>
+        <h5>¿Estás seguro de eliminar el registro?. Una vez eliminado no podrá recuperarse</h5>
+        <br>
+        <h6>Ingresa tu contraseña para continuar</h6>
+        <form class="row g-3">
+         
+          <div class="col-md-12">
+              <label for="inputZip"  class="form-label">Contraseña</label>
+              <input type="password" class="form-control" [(ngModel)]="userPassword"  name="passwordForDelete" id="passwordForDelete">
+          </div>
+
+          <div class="form-group; text-center">
+            <button type="button" class="btn btn-danger" (click)="getDeleteToken()" >Borrar</button>
+          </div>
+
+        </form>
+        
+      </div>
+    </div>
+</div>
+</div>
+
+<br>

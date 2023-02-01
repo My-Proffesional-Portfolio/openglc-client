@@ -36,7 +36,7 @@ export class MealEventComponent implements OnInit {
   mealEventTypes : MealType[] = [];
   selectedEventType : MealType = <MealType>{};
 
-  eventDate: Date = new Date();
+  eventDate: Date;
   isPospandrial : boolean = true;
   glcLevel : number | undefined = undefined;
   newMealEvent: NewMealEventModel;
@@ -45,7 +45,13 @@ export class MealEventComponent implements OnInit {
   processing: boolean = false;
 
   constructor(private eventMealService: EventMealsService, private router: Router) {
+    debugger;
+    var today = new Date();
+    var month = today.getMonth();
+    var year = today.getFullYear();
+    var day = today.getDate();
 
+    this.eventDate = new Date(year, month, day);
     this.newMealEvent = <NewMealEventModel>{}
     this.newMealEvent.eventDate = this.eventDate;
     this.newMealEvent.itemMeals = new Array();

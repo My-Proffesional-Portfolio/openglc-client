@@ -63,6 +63,7 @@ export class EventsComponent implements OnInit {
       next: (data: any) => {
         debugger;
         this.deleteToken = data.token;
+        this.deleteEventById();
         
       },
       error: (err) => {
@@ -76,6 +77,20 @@ export class EventsComponent implements OnInit {
 
   deleteEventById(){
     var selectedEventID = this.currentEventShow.id;
+    this.eventMealService.deleteEvent(selectedEventID, this.deleteToken)
+    .subscribe({
+      next: (data: any) => {
+        debugger;
+        this.deleteToken = "";
+        window.location.reload();
+        
+      },
+      error: (err) => {
+        debugger;
+        alert("Contraseña incorrecta o servicio no disponible! -->" + err.error.errorMessages[0]);
+        this.processingGetToken = false;
+        },
+      });
 
   }
 

@@ -57,4 +57,11 @@ export class EventMealsService {
     
     return this.httpClient.get(environment.apiURL + "MealEvents/id?eventId=" + eventID, options);
   }
+
+  deleteEvent(eventID: string, specialToken : string)
+  {
+    debugger;
+    const options = {withCredentials: true, headers: new HttpHeaders({'Authorization': 'Bearer ' + specialToken})};
+    return this.httpClient.delete(environment.apiURL + "MealEvents/id?eventId=" + eventID, options);
+  }
 }

@@ -9,9 +9,8 @@ import { NewRegisterModel } from '../Models/Accounts/NewRegisterModel';
 export class AccountService {
 
   constructor(private httpClient: HttpClient) { }
-
   login(userName : string, password: string, generateDeleteToken : boolean = false) {
-
+    debugger;
     var requestQry = "Account/login?userName=" + userName + "&password=" +password;
     if (generateDeleteToken === true)
     {

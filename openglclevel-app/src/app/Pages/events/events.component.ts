@@ -31,6 +31,8 @@ export class EventsComponent implements OnInit {
   userPassword : string = "";
   processingGetToken: boolean = false;
   deleteToken : string = "";
+  public isCollapsed = true;
+  searchTerm = "";
 
   constructor(private eventMealService: EventMealsService, private pagerService : PagerService
     ,private accountService : AccountService) { 
@@ -40,7 +42,8 @@ export class EventsComponent implements OnInit {
 
   // #region server call definition methods
     getEvents(){
-    this.eventMealService.getMealEvents(this.currentPage, this.itemsPerPage, "").subscribe({
+      debugger;
+    this.eventMealService.getMealEvents(this.currentPage, this.itemsPerPage, this.searchTerm).subscribe({
       next: (data: any) => {
         debugger;
         this.pagedData= data;

@@ -1,3 +1,35 @@
+
+<div class="row">
+ <div>
+  <div class="card">
+    <div class="card-body">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Alimentos</span>
+        </div>
+        <input type="text" class="form-control" [(ngModel)]="searchTerm" name="searchTerm" placeholder="Por ejemplo, huevo, tortillas, etc" aria-label="Username" aria-describedby="basic-addon1">
+        <button class="btn btn-success" (click)="getEvents()"><i class="fa fa-search"></i>Buscar</button>
+        
+      </div>
+      <div class="input-group mb-3">
+      </div>
+      <!-- <label>Fecha de Expedición</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Inicio</span>
+        </div>
+        <input type="date" class="form-control" [ngModel] ="emissionStartDate | date:'yyyy-MM-dd'" (ngModelChange)="emissionStartDate = $event">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Fin</span>
+        </div>
+        <input type="date" class="form-control" [ngModel]="emissionEndDate| date:'yyyy-MM-dd'"  (ngModelChange)="emissionEndDate = $event">
+      </div> -->
+    </div>
+  </div>
+ </div>
+</div>
+<br>
+
 <div class="row">
 
 <div class="col-sm-7">
